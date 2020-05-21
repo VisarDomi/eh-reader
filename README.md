@@ -1,5 +1,5 @@
 # eh-reader
-A custom reader for sad panda with iOS bookmarklets in mind, which should be activated on the gallery
+A custom reader for sad panda with iOS bookmarklets in mind, which must be activated on the gallery page
 
 ### To clone the repository locally, configure the SSH keys and then run:
 
@@ -7,8 +7,4 @@ A custom reader for sad panda with iOS bookmarklets in mind, which should be act
 
 ## What this script does
 
-This JavaScript project will allow you to:
-
-- get all the images of the gallery of sad panda in one long strip format, without spaces
-- the script assumes that the images 500 kB and your average internet speed is 8Mbs, which would be around 1 MB/s
-- reload all images that do not load after 1 second by calling the reload button of sad panda
+This JavaScript project will allow you to get all the images of the gallery of sad panda in one long strip format, without spaces. It uses the backup links, so there will be no failure of the loading of the images like it usually does.
