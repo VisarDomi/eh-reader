@@ -41,6 +41,7 @@ function main() {
             image.id = order
             image.style.display = "flex"
             image.style.margin = "auto"
+            image.loading = "lazy"
             image.src = imageSource
             body.appendChild(image)
           }
@@ -113,6 +114,7 @@ function pleaseDontDelete() {
   image2.id = order
   image2.style.display = "flex"
   image2.style.margin = "auto"
+  image2.loading = "lazy"
   image2.src = imageSource2
   body.appendChild(image2)
   
@@ -122,6 +124,7 @@ function pleaseDontDelete() {
   image.id = order
   image.style.display = "flex"
   image.style.margin = "auto"
+  image.loading = "lazy"
   image.src = imageSource
   body.appendChild(image)
 

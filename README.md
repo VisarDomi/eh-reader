@@ -12,3 +12,8 @@ This JavaScript project will allow you to:
 - get all the images of the gallery of sad panda in one long strip format, without spaces
 - the script assumes that the images 500 kB and your average internet speed is 8Mbs, which would be around 1 MB/s
 - reload all images that do not load after 1 second by calling the reload button of sad panda
+
+To do:
+
+- same width for the images - low priority
+- is it possible to make reader read it - high priority
