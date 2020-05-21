@@ -55,21 +55,18 @@ function main() {
     xhr.send()
     // sort on the last image
     if (index === gdt.children.length-2) {
-      setTimeout(function(){
-        sorting(body)
-      }, 500)
+      timeOut(body, 500)
     }
-    setTimeout(function(){
-      sorting(body)
-    }, 5000)
-    setTimeout(function(){
-      sorting(body)
-    }, 30000)
-    setTimeout(function(){
-      sorting(body)
-    }, 180000)
+    timeOut(body, 5000)
+    timeOut(body, 30000)
+    timeOut(body, 180000)
   }
 };
+function timeOut(body, duration) {
+  setTimeout(function(){
+    sorting(body)
+  }, duration)
+}
 function sorting(body) {
   // get child divs
   let children = body.getElementsByTagName("img");
