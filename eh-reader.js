@@ -1,0 +1,4 @@
+javascript:(function(){
+  let js = `async function mainF(){let e=document.getElementById("gdt");document.head.innerHTML="";let t=document.body;t.innerHTML="",t.style.backgroundColor="black";for(let n in e.children){if(n===e.children.length-1)break;let i=e.children[n].children[0].children[0].href,a=new XMLHttpRequest;a.onreadystatechange=function(){if(4===a.readyState){let e=a.responseText;nl=e.split("nl('")[1].split("')\\\"")[0];let n=i+"?nl="+nl,l=new XMLHttpRequest;l.onreadystatechange=function(){if(4===l.readyState){let e=l.responseText;imageSource=e.split('src="')[5].split('"')[0],image=document.createElement("img"),image.style.display="flex",image.style.margin="auto",image.src=imageSource,t.appendChild(image)}},l.open("GET",n),l.send()}},a.open("GET",i),a.send(),await new Promise(e=>setTimeout(e,50))}}mainF();`
+  document.body.appendChild(document.createElement("script")).innerText=js;
+})();
