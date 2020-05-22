@@ -9,13 +9,19 @@ This JavaScript project will allow you to get all the images of the gallery of s
 
 ## What this script does
 
-This JavaScript project will allow you to:
+### This JavaScript project will allow you to:
 
 - get all the images of the gallery of sad panda in one long strip format, without spaces
 - the script assumes that the images 500 kB and your average internet speed is 8Mbs, which would be around 1 MB/s
 - reload all images that do not load after 1 second by calling the reload button of sad panda
 
-To do:
 
+### To do:
 - same width for the images - low priority
 - is it possible to make reader read it - high priority
+  - js does not work to make the reader work
+  - <meta name="apple-mobile-web-app-capable" content="yes">
+  - make a page with a link to exhentai and browser through add to home screen
+    - there you are https://vigilant-leakey-4781e9.netlify.app/
+  - does not work
+- only solution is to make a full blown app and side load it
