@@ -11,7 +11,7 @@
 // 2. make some type of carousel with them, so you scroll horizontally not vertically
 
 function main() {
-  let iphoneWidth = 1125
+  const IPHONE_WIDTH = 1125
   // get gallery links
   let gdt = document.getElementById("gdt");
   // get title
@@ -51,19 +51,36 @@ function main() {
         let imagePageNlUrl = imagePageUrl + "?nl=" + nl;
         // call this nl to get the source of the nl image
         let request = new XMLHttpRequest();
+        // is it a timeout problem, when an image is put as source, but is not loading because of timeout
+        request.ontimeout = function() {
+          console.log("request is", request)
+          console.log("request.status is", request.status)
+        }
         request.onreadystatechange = function () {
           if (request.readyState === 4) {
             // get response text from image page nl url
             let res = request.responseText;
             // get image nl source
             let imageSource = res.split("src=\"")[5].split("\"")[0];
+            console.log("imageSource", imageSource)
             // create image tag and set title of the image from the image url
-            let image = document.createElement("img");
+            // let image = document.createElement("img");
+            let image = new Image()
+            // reload image on error
+            image.onerror = function() {
+              image.src = imageSource
+              timeout(div, 500)
+            }
             let title = child.children[0].children[0].title;
             // set order number, width and height
             let order = title.split("Page")[1].split(":")[0].trim();
             let width = imageSource.split("-")[2]
             let height = imageSource.split("-")[3]
+            // now transform the height and width to match iPhone 10s
+            // let ratioHW = height/width
+            // let finalHeight = parseInt(IPHONE_WIDTH*ratioHW)
+            // width = IPHONE_WIDTH
+            // height = finalHeight
             // create a div container and set its order number
             let divContainer = document.createElement("div")
             divContainer.id = order
@@ -83,7 +100,7 @@ function main() {
             // which means tx=0 and ty=width
             image.setAttribute("style", "transform:matrix(0,-1,1,0,0,"+width+");height:"+height+"px;width:"+width+"px;")
             // set loading to lazy, and remember to activate this experimental feature in safari
-            image.loading = "lazy";
+            // image.loading = "lazy";
             // set source
             image.src = imageSource;
             // append image to container div
@@ -100,13 +117,13 @@ function main() {
     xhr.send();
   }
   // sort after 0.05, 0.5, 5, 50, 500 seconds
-  timeOut(div, 50);
-  timeOut(div, 500);
-  timeOut(div, 5000);
-  timeOut(div, 50000);
-  timeOut(div, 500000);
+  timeout(div, 50);
+  timeout(div, 500);
+  timeout(div, 5000);
+  timeout(div, 50000);
+  timeout(div, 500000);
 }
-function timeOut(div, duration) {
+function timeout(div, duration) {
   // activate the function after the duration
   setTimeout(function () {
     sorting(div);
@@ -124,7 +141,7 @@ function sorting(div) {
   for (i = 0, len = children.length; i < len; i++) {
     obj = {};
     obj.element = children[i];
-    obj.idNum = parseInt(children[i].id.replace(/[^\d]/g, ""), 10);
+    obj.idNum = parseInt(children[i].id, 10);
     ids.push(obj);
   }
   // sort the array

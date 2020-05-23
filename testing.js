@@ -200,3 +200,31 @@ javascript: (function () {
     document.body.appendChild(n),
     document.body.appendChild(t);
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ok, rotation can work, now to position them correctly and with a width of no more than 1125px
+
+let height = 1807
+let width = 1280
+let ratioHW = height/width
+const IPHONE_WIDTH = 1125
+let finalHeight = IPHONE_WIDTH*ratioHW
+
+// now I work only with IPHONE_WIDTH and finalHeight
+height = finalHeight
+width = IPHONE_WIDTH
+
+image.setAttribute("style", "transform:matrix(0,-1,1,0,0,"+width+");height:"+height+"px;width:"+width+"px;")
