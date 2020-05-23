@@ -13,12 +13,12 @@ function test() {
   div.style.alignItems = "center"
 
   //inside loop
-  let divContainer2 = document.createElement("div")
-  let order2 = "2";
-  divContainer2.id = order2
   let imageSource2 = `https://abemebr.lmsywulicdlc.hath.network/h/e55369610326af571d18f05b20d3deea4c4090e4-352521-1050-1500-jpg/keystamp=1590182400-9da1977a74;fileindex=21658098;xres=org/eatrich_05.jpg`;
+  let order2 = "2";
   let width2 = imageSource2.split("-")[2]
   let height2 = imageSource2.split("-")[3]
+  let divContainer2 = document.createElement("div")
+  divContainer2.id = order2
   // because of rotation, width will become height and height will become width
   divContainer2.setAttribute("style", "min-width:"+height2+"px;"+"min-height:"+width2+"px;")
   let image2 = document.createElement("img");
@@ -40,7 +40,6 @@ function test() {
   image1.loading = "lazy";
   image1.src = imageSource1;
   divContainer1.appendChild(image1)
-  console.log("container1", divContainer1)
   div.appendChild(divContainer1);
 
   sorting(div);

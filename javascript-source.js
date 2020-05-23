@@ -11,73 +11,100 @@
 // 2. make some type of carousel with them, so you scroll horizontally not vertically
 
 function main() {
+  // get gallery links
   let gdt = document.getElementById("gdt");
+  // get title
   let docTitle = document.title;
+  // empty head
   document.head.innerHTML = "";
+  // set title back
   document.title = docTitle;
+  // empty body
   let body = document.body;
   body.innerHTML = "";
-  addCSS()
-  body.style.backgroundColor = "black";
-  for (let index in gdt.children) {
-    // don't iterate the last element
-    if (index === gdt.children.length - 1) {
-      break;
-    }
+  // set body style
+  body.style.margin = "0px"
+  body.style.backgroundColor = "black"
+  // create wrapping div
+  let div = document.createElement("div");
+  body.appendChild(div)
+  div.style.display = "flex"
+  div.style.flexFlow = "row nowrap"
+  div.style.justifyContent = "left"
+  div.style.alignItems = "center"
+  // load all the images
+  for (index = 0; index < gdt.children.length - 1; index++) {
+    // current element of the gallery
     let child = gdt.children[index];
-    // lists all gallery imageUrls
-    let imageUrlFromGallery = child.children[0].href;
-    // for each image url, do a request to get nl
+    // get image page url
+    let imagePageUrl = child.children[0].href;
+    // for each image page url, do a request to get nl, which is the backup links that work 100%
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
+        // get response text from image page url
         let res = xhr.responseText;
         // now i need the number after nl('
         nl = res.split("nl('")[1].split("')\"")[0];
-        let imageUrlFromNl = imageUrlFromGallery + "?nl=" + nl;
+        // get image page nl url
+        let imagePageNlUrl = imagePageUrl + "?nl=" + nl;
+        // call this nl to get the source of the nl image
         let request = new XMLHttpRequest();
         request.onreadystatechange = function () {
           if (request.readyState === 4) {
+            // get response text from image page nl url
             let res = request.responseText;
-            // now i need the image source
+            // get image nl source
             let imageSource = res.split('src="')[5].split('"')[0];
+            // create image tag and set title of the image from the image url
             let image = document.createElement("img");
             let title = child.children[0].children[0].title;
-            let order = parseInt(title.split("Page")[1].split(":")[0].trim());
-            image.id = order;
-            image.style.display = "flex";
-            image.style.margin = "auto";
+            // set order number, width and height
+            let order = title.split("Page")[1].split(":")[0].trim();
+            let width = imageSource.split("-")[2]
+            let height = imageSource.split("-")[3]
+            // create a div container and set its order number
+            let divContainer = document.createElement("div")
+            divContainer.id = order
+            // set container style
+            // because of the 270 degree rotation,
+            // width will become height and height will become width
+            divContainer.setAttribute("style", "min-width:"+height+"px;"+"min-height:"+width+"px;")
+            // set image style where the rotation occurs
+            image.setAttribute("style", "transform-origin:top left; transform: rotate(270deg) translateX(-100%);height:"+height+"px;width:"+width+"px;")
+            // set loading to lazy, and remember to activate this experimental feature in safari
             image.loading = "lazy";
+            // set source
             image.src = imageSource;
-            body.appendChild(image);
+            // append image to container div
+            divContainer.appendChild(image)
+            // append container to wrapping div
+            div.appendChild(divContainer);
           }
         };
-        request.open("GET", imageUrlFromNl);
+        request.open("GET", imagePageNlUrl);
         request.send();
       }
     };
-    xhr.open("GET", imageUrlFromGallery);
+    xhr.open("GET", imagePageUrl);
     xhr.send();
-    // sort on the last image
-    if (index === gdt.children.length - 2) {
-      timeOut(body, 500);
-    }
-    timeOut(body, 5000);
-    timeOut(body, 30000);
-    timeOut(body, 180000);
   }
+  // sort after 0.05, 0.5, 5, 50, 500 seconds
+  timeOut(div, 50);
+  timeOut(div, 500);
+  timeOut(div, 5000);
+  timeOut(div, 50000);
+  timeOut(div, 500000);
 }
-function addCss() {
-
-}
-function timeOut(body, duration) {
+function timeOut(div, duration) {
+  // activate the function after the duration
   setTimeout(function () {
-    sorting(body);
+    sorting(div);
   }, duration);
 }
-function sorting(body) {
-  // get child divs
-  let children = body.getElementsByTagName("div");
+function sorting(div) {
+  // get a list of child divs
+  let children = div.getElementsByTagName("div");
   let ids = [],
     obj,
     i,
@@ -96,7 +123,7 @@ function sorting(body) {
   });
   // append in sorted order
   for (i = 0; i < ids.length; i++) {
-    body.appendChild(ids[i].element);
+    div.appendChild(ids[i].element);
   }
 }
 main();
