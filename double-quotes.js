@@ -1,7 +1,7 @@
 // we activate this script on the gallery with large thumbnails
 
 // be aware while minifying https://javascript-minifier.com/ to escape \
-// in other words it should be: .split("nl('")[1].split("')\\\"")
+// in other words it should be: .split("nl(")[1].split(")\\\"")
 // or [^\\\d]/g
 
 // width is not consistent - nobody cares
@@ -11,6 +11,7 @@
 // 2. make some type of carousel with them, so you scroll horizontally not vertically
 
 function main() {
+  let iphoneWidth = 1125
   // get gallery links
   let gdt = document.getElementById("gdt");
   // get title
@@ -44,8 +45,8 @@ function main() {
       if (xhr.readyState === 4) {
         // get response text from image page url
         let res = xhr.responseText;
-        // now i need the number after nl('
-        nl = res.split("nl('")[1].split("')\"")[0];
+        // now i need the number after nl(
+        nl = res.split("nl(")[1].split(")\"")[0];
         // get image page nl url
         let imagePageNlUrl = imagePageUrl + "?nl=" + nl;
         // call this nl to get the source of the nl image
@@ -55,7 +56,7 @@ function main() {
             // get response text from image page nl url
             let res = request.responseText;
             // get image nl source
-            let imageSource = res.split('src="')[5].split('"')[0];
+            let imageSource = res.split("src=\"")[5].split("\"")[0];
             // create image tag and set title of the image from the image url
             let image = document.createElement("img");
             let title = child.children[0].children[0].title;
@@ -67,11 +68,20 @@ function main() {
             let divContainer = document.createElement("div")
             divContainer.id = order
             // set container style
-            // because of the 270 degree rotation,
+            // because of the 270 degree clockwise rotation,
             // width will become height and height will become width
             divContainer.setAttribute("style", "min-width:"+height+"px;"+"min-height:"+width+"px;")
             // set image style where the rotation occurs
-            image.setAttribute("style", "transform-origin:top left;transform:rotate(270deg) translateX(-100%);height:"+height+"px;width:"+width+"px;")
+            // rotation is calculated as follows:
+            // matrix(cos(x), sin(x), -sin(x), cos(x), tx, ty)
+            // where x is 270 degrees rotation of the object clockwise
+            // and just substite 270 in sin(x) and cos(x)
+            // which would mean a usual trigonometric counter-clockwise 270 degrees on the unit circle
+            // and tx and ty are the translations horizontally and vertically
+            // translation should be translateX(-100%)
+            // which means that the object should be translated vertically by the width value
+            // which means tx=0 and ty=width
+            image.setAttribute("style", "transform:matrix(0,-1,1,0,0,"+width+");height:"+height+"px;width:"+width+"px;")
             // set loading to lazy, and remember to activate this experimental feature in safari
             image.loading = "lazy";
             // set source
