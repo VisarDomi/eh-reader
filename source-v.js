@@ -8,7 +8,6 @@
 
 
 // this fucking code works perfectly
-// loads first 16 images
 
 function main() {
   let gdt = document.getElementById("gdt")
@@ -18,6 +17,7 @@ function main() {
   let body = document.body
   body.innerHTML=""
   body.style.backgroundColor = "black"
+  let loadedImages = 0
   for (let index in gdt.children) {
     let numberImages = gdt.children.length-1 //40
     if (parseInt(index)<numberImages && isNaN(parseInt(index))!==true){
@@ -34,7 +34,7 @@ function main() {
             if (request.readyState === 4) {
               let res = request.responseText
               imageSource = res.split("src=\"")[5].split("\"")[0]
-              image = document.createElement("img")
+              image = new Image()
               let title = child.children[0].children[0].title
               let order = parseInt(title.split("Page")[1].split(":")[0].trim())
               let width = imageSource.split("-")[6]
@@ -44,9 +44,20 @@ function main() {
               image.height = height
               image.style.display = "flex"
               image.style.margin = "auto"
-              image.loading = "lazy"
+              image.loading = "eager"
               image.src = imageSource
               body.appendChild(image)
+              // reload after one second of error
+              image.onerror = function(){
+                setTimeout(function() {image.src=imageSource}, 1000)
+              }
+              // image loaded successfully - now change from vertical to horizontal
+              image.onload = function(){
+                loadedImages++
+                if (loadedImages===numberImages) {
+                  console.log("change from vertical to horizontal")
+                }
+              }
               if(parseInt(index)===numberImages-1){
                 sorting(body)
               }
@@ -61,8 +72,8 @@ function main() {
     }
   }
 };
-function sorting(body) {
-  let children = body.children;
+function sorting(div) {
+  let children = div.children;
   let ids = [], obj, i, len;
   for (i = 0, len = children.length; i < len; i++) {
     obj = {};
@@ -72,7 +83,7 @@ function sorting(body) {
   }
   ids.sort(function(a, b) {return(a.idNum - b.idNum);});
   for (i = 0; i < ids.length; i++) {
-    body.appendChild(ids[i].element);
+    div.appendChild(ids[i].element);
   }
 }
 main()
