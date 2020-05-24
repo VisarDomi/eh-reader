@@ -14,8 +14,16 @@
 
 // width is not consistent - nobody cares
 
+
+// images not loading is bad - so fuse the good Vertical reader loading with the fullscreen Horizontal Reader
+// by making a button that appears after all the images are loaded
+
+
+// this code is bad, the images do not load
+
 function main() {
   const IPHONE_WIDTH = 1125
+  let loading = false
   // get gallery links
   let gdt = document.getElementById("gdt");
   // get title
@@ -33,11 +41,15 @@ function main() {
   // create wrapping div
   let div = document.createElement("div");
   body.appendChild(div)
-  div.style.display = "flex"
-  div.style.flexDirection = "row"
-  div.style.flexWrap = "nowrap"
-  div.style.justifyContent = "left"
-  div.style.alignItems = "center"
+  // make the div flex so it is horizontal
+  // this should be after loading
+  if (loading===true) {
+    div.style.display = "flex"
+    div.style.flexDirection = "row"
+    div.style.flexWrap = "nowrap"
+    div.style.justifyContent = "left"
+    div.style.alignItems = "center"
+  }
   // load all the images
   for (index = 0; index < gdt.children.length - 1; index++) {
     let multiplier = index
@@ -45,7 +57,7 @@ function main() {
     if (index < 10) {
       multiplier = 0
     }
-    setTimeout(loop(gdt, index, IPHONE_WIDTH, div), 500*multiplier)
+    setTimeout(loop(gdt, index, IPHONE_WIDTH, div, loading), 500*multiplier)
   }
   // sort after 0.05, 0.5, 5, 50, 500 seconds
   setTimeout(sort(div), 50)
@@ -54,7 +66,7 @@ function main() {
   setTimeout(sort(div), 50000)
   setTimeout(sort(div), 500000)
 }
-function loop(gdt, index, IPHONE_WIDTH, div) {
+function loop(gdt, index, IPHONE_WIDTH, div, loading) {
   // current element of the gallery
   let child = gdt.children[index];
   // get image page url
@@ -92,8 +104,8 @@ function loop(gdt, index, IPHONE_WIDTH, div) {
           let title = child.children[0].children[0].title;
           // set order number, width and height
           let order = title.split("Page")[1].split(":")[0].trim();
-          let width = imageSource.split("-")[2]
-          let height = imageSource.split("-")[3]
+          let width = imageSource.split("-")[6]
+          let height = imageSource.split("-")[7]
           // now transform the height and width to match iPhone 10s
           let ratioHW = height/width
           let finalHeight = parseInt(IPHONE_WIDTH*ratioHW)
@@ -121,7 +133,11 @@ function loop(gdt, index, IPHONE_WIDTH, div) {
           // 1588/232 = 6.8
           // 1280/232 = 5.5
           // 1807/232 = 7.8
-          image.setAttribute("style", "transform:matrix(0,-1,1,0,232,-232);height:"+height+"px;width:"+width+"px;")
+
+          // now rotate the image only if the loading is true
+          if (loading===true) {
+            image.setAttribute("style", "transform:matrix(0,-1,1,0,232,-232);height:"+height+"px;width:"+width+"px;")
+          }
           // set loading to lazy, and remember to activate this experimental feature in safari
           // image.loading = "lazy";
           // set source
@@ -151,7 +167,7 @@ function sort(div) {
   for (i = 0, len = children.length; i < len; i++) {
     obj = {};
     obj.element = children[i];
-    obj.idNum = parseInt(children[i].id, 10);
+    obj.idNum = parseInt(children[i].id.replace(/[^\d]/g, ""), 10);
     ids.push(obj);
   }
   // sort the array
