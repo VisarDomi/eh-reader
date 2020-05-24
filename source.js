@@ -20,7 +20,7 @@ function main() {
   // set margin to 0 and margin-top to 10px and background-color to black
   body.style.margin = "0px";
   body.style.marginTop = "10px";
-  body.style.backgroundColor = "black";
+  body.style.backgroundColor = "#555555";
   // initialize the loaded images counter - for the horizontal viewer
   let loadedImages = 0;
   // last div does not contain an image, so that's why the total number of images is (length-1)
