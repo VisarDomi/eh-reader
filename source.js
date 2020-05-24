@@ -59,6 +59,7 @@ function main() {
               }
               // image loaded successfully - now change from vertical to horizontal
               image.onload = function(){
+                sorting(body)
                 loadedImages++
                 if (loadedImages===numberImages && HORIZONTAL===true) {
                   // console.log("changing from vertical to horizontal...")
@@ -79,9 +80,6 @@ function main() {
                     singleImage.setAttribute("style", "transform:matrix(0,-1,1,0,232,-232);height:"+height+"px;width:"+width+"px;")
                   }
                 }
-              }
-              if(parseInt(index)===numberImages-1){
-                sorting(body)
               }
             }
           };
