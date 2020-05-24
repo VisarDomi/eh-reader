@@ -17,9 +17,10 @@ function main() {
   let body = document.body;
   // empty the body
   body.innerHTML = "";
-  // set margin to 0 and margin-top to 10px and background-color to black
+  // set margin to 0 and margin-top to 10px
   body.style.margin = "0px";
   body.style.marginTop = "10px";
+  // set background-color to #555555 to tell when the image approaches the edge of the screen during the night
   body.style.backgroundColor = "#555555";
   // initialize the loaded images counter - for the horizontal viewer
   let loadedImages = 0;
@@ -103,6 +104,7 @@ function main() {
                 // now begin the logic of horizontal viewer
                 // increase the counter of the loaded images
                 loadedImages++;
+                // transform vertical to horizontal if all the images are loaded successfully
                 if (loadedImages === NUMBER_OF_IMAGES && HORIZONTAL === true) {
                   // set body style display to flex and flex flow to row nowrap
                   body.style.display = "flex";

@@ -14,7 +14,7 @@ Gets all the images of the gallery of sad panda in one long strip format, withou
 
   1. first loads all the images in vertical position
   2. then transforms them to horizontal. Set HORIZONTAL to false if you do not want this feature
-    - go to sad panda settings and set virtual width to 2100px for best horizontal view in iPhone 10s
+    - go to sad panda settings and set virtual width to 2175px (empirical value) for best horizontal view in iPhone 10s
 
 ## How does a bookmarklet work
 
