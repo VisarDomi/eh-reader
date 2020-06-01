@@ -17,11 +17,9 @@ function main() {
   let body = document.body;
   // empty the body
   body.innerHTML = "";
-  // set margin to 0 and margin-top to 10px
+  // set margin to 0 and background-color to black
   body.style.margin = "0px";
-  body.style.marginTop = "10px";
-  // set background-color to #555555 to tell when the image approaches the edge of the screen during the night
-  body.style.backgroundColor = "#555555";
+  body.style.backgroundColor = "#000000";
   // initialize the loaded images counter - for the horizontal viewer
   let loadedImages = 0;
   // last div does not contain an image, so that's why the total number of images is (length-1)
@@ -62,8 +60,8 @@ function main() {
               // get the page number which is set by the server and not the uploader
               const PAGE_NUMBER = parseInt(IMAGE_NAME.split("Page")[1].split(":")[0].trim());
               // set width and height - width should always be 1280px or whatever you set in the sad panda settings page
-              let width = IMAGE_SOURCE.split("-")[6];
-              let height = IMAGE_SOURCE.split("-")[7];
+              let width = IMAGE_SOURCE.split("-")[2];
+              let height = IMAGE_SOURCE.split("-")[3];
               // get ratio
               const RATIO_HW = height / width;
               // get final height

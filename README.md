@@ -36,14 +36,14 @@ A bookmarklet is a bookmark that is edited so that instead of the https://..... 
 
 Some perks are useful for this. You need hath to get perks. To get hath, you either need to donate, run H@H or play HV. Get these perks in this order:
 
-1. All Thumbs is necessary to load 200 images at once. This script loads only the images of the thumbnails on the first page for now.
-  - 400 hath - priority: high
-2. Too Many Pages is necessary to browse through sad panda without getting the dreaded limit on how many pages you can view.
-  - 170 hath - priority: medium
-3. Paging Enlargement III is very optional. It allows you get get 200 results in a search.
-  - 1600 hath - priority: low
-4. Source Nexus and Multi-Page Viewer. Useful perks for future development of this script. No promises.
-  - 500 hath - priority: lowest
+1. Too Many Pages. It is necessary to browse through sad panda without getting the dreaded limit on how many pages you can view.
+  - 170 hath
+2. All Thumbs. It is necessary to load 200 images at once. This script loads only the images of the thumbnails on the current page for now.
+  - 400 hath
+3. Source Nexus and Multi-Page Viewer. Multi-Page Viewer will be used for future development of this script. No promises.
+  - 500 hath
+4. Paging Enlargement III. It is very optional. It allows you get get 200 results in a search.
+  - 1600 hath
 
 
 ### To-do
