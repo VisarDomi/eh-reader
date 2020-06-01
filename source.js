@@ -1,5 +1,6 @@
 // the main function that will be executed by the script
 function main() {
+  const BEGINNING_PAGE_NUMBER = prompt("Begin:", "1");
   // settings
   const HORIZONTAL = true;
   const IPHONE_WIDTH = 1125;
@@ -28,6 +29,14 @@ function main() {
   for (const CHILD of GDT.children) {
     // except for element with class "c"
     if (CHILD.classList.value !== "c") {
+      // get image name from the nested element - large thumbnails view  on gallery only
+      const IMAGE_NAME = CHILD.children[0].children[0].title;
+      // get the page number which is set by the server and not the uploader
+      const PAGE_NUMBER = parseInt(IMAGE_NAME.split("Page")[1].split(":")[0].trim());
+      // skip the loop if PAGE_NUMBER is less than BEGINNING_PAGE_NUMBER
+      if (PAGE_NUMBER < parseInt(BEGINNING_PAGE_NUMBER)){
+        continue
+      }
       // get image page link from the element - large thumbnails view  on gallery only
       const URL_FROM_GALLERY = CHILD.children[0].href;
       // create a new request and send it to the url we got before
@@ -55,10 +64,6 @@ function main() {
               const IMAGE_SOURCE = RESPONSE_TEXT_2.split('src="')[5].split('"')[0];
               // create a new image tag element. same as document.createElement("img")
               let image = new Image();
-              // get image name from the nested element - large thumbnails view  on gallery only
-              const IMAGE_NAME = CHILD.children[0].children[0].title;
-              // get the page number which is set by the server and not the uploader
-              const PAGE_NUMBER = parseInt(IMAGE_NAME.split("Page")[1].split(":")[0].trim());
               // set width and height - width should always be 1280px or whatever you set in the sad panda settings page
               let width = IMAGE_SOURCE.split("-")[2];
               let height = IMAGE_SOURCE.split("-")[3];
