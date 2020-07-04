@@ -89,6 +89,7 @@ function engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks) {
                   let divContainer = document.createElement("div");
                   image = new Image();
                   image.src = imageSources[j].source;
+                  image.setAttribute("style","height:auto;width:100%")
                   divContainer.append(image);
                   body.appendChild(divContainer);
                 }, j * 500); // load the images every 0.5 seconds

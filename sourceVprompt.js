@@ -88,6 +88,7 @@ function engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks) {
                 setTimeout(function () {
                   let divContainer = document.createElement("div");
                   image = new Image();
+                  image.setAttribute("style","height:auto;width:100%")
                   image.src = imageSources[j].source;
                   divContainer.append(image);
                   body.appendChild(divContainer);
