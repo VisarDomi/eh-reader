@@ -1,12 +1,11 @@
 function main() {
-  const BEGINNING_PAGE_NUMBER = "1" //prompt("Begin:", "1"); //21
-  if (BEGINNING_PAGE_NUMBER !== null && BEGINNING_PAGE_NUMBER !== "") {
-    // const IPHONE_WIDTH = 1125;
+  const BEGINNING_PAGE_NUMBER = 1//parseInt(prompt("Begin:", "1")); //21
+  if (BEGINNING_PAGE_NUMBER !== NaN && BEGINNING_PAGE_NUMBER<=400) {
     let imageSources = [];
     let loadedLinks = 0;
     let thumbnailPages = [];
     const GDT = document.getElementById("gdt");
-    if (parseInt(BEGINNING_PAGE_NUMBER) <= 200) {
+    if (BEGINNING_PAGE_NUMBER <= 200) {
       // true
       for (let i = BEGINNING_PAGE_NUMBER - 1; i < GDT.children.length - 1; i++) {
         // start from 21
@@ -31,19 +30,32 @@ function main() {
       xhr1.onreadystatechange = function () {
         if (xhr1.readyState === 4) {
           const RESPONSE_TEXT_1 = xhr1.responseText;
-          for (let i = 1; i <= NUMBER_THUMBNAIL_PAGES - 200; i++) {
-            thumbnailPages.push(
-              RESPONSE_TEXT_1.split("gdtl")[i].split('href="')[1].split('">')[0]
-            );
-          }
+          addSecondPage(NUMBER_THUMBNAIL_PAGES, thumbnailPages, RESPONSE_TEXT_1, BEGINNING_PAGE_NUMBER)
           engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks);
         }
-      };
+      }
     } else if (NUMBER_THUMBNAIL_PAGES <= 200) {
       engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks);
     }
   }
 }
+
+function addSecondPage(NUMBER_THUMBNAIL_PAGES, thumbnailPages, RESPONSE_TEXT_1, BEGINNING_PAGE_NUMBER) {
+  if (BEGINNING_PAGE_NUMBER>=200){
+    for (let i = BEGINNING_PAGE_NUMBER - 200; i <= NUMBER_THUMBNAIL_PAGES - 200; i++) {
+      thumbnailPages.push(
+        RESPONSE_TEXT_1.split("gdtl")[i].split('href="')[1].split('">')[0]
+      );
+    }
+  } else {
+    for (let i = 1; i <= NUMBER_THUMBNAIL_PAGES - 200; i++) {
+      thumbnailPages.push(
+        RESPONSE_TEXT_1.split("gdtl")[i].split('href="')[1].split('">')[0]
+      );
+    }
+  }
+}
+
 function engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks) {
   for (let i = 0; i < REQUESTED_PAGES; i++) {
     let xhr2 = new XMLHttpRequest();
@@ -88,8 +100,8 @@ function engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks) {
                 setTimeout(function () {
                   let divContainer = document.createElement("div");
                   image = new Image();
-                  image.src = imageSources[j].source;
                   image.setAttribute("style","height:auto;width:100%")
+                  image.src = imageSources[j].source;
                   divContainer.append(image);
                   body.appendChild(divContainer);
                 }, j * 500); // load the images every 0.5 seconds

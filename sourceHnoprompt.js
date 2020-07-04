@@ -1,5 +1,5 @@
 function main() {
-  const BEGINNING_PAGE_NUMBER = parseInt(prompt("Begin:", "1")); //21
+  const BEGINNING_PAGE_NUMBER = 1 //parseInt(prompt("Begin:", "1")); //21
   const NUMBER_THUMBNAIL_PAGES = parseInt(
     document
       .getElementById("gdd")
@@ -14,14 +14,18 @@ if (BEGINNING_PAGE_NUMBER !== NaN && BEGINNING_PAGE_NUMBER<=400 && NUMBER_THUMBN
     const GDT = document.getElementById("gdt");
     if (BEGINNING_PAGE_NUMBER <= 200) {
       // true
-      for (let i = BEGINNING_PAGE_NUMBER - 1; i < GDT.children.length - 1; i++) {
+      for (
+        let i = BEGINNING_PAGE_NUMBER - 1;
+        i < GDT.children.length - 1;
+        i++
+      ) {
         // start from 21
         thumbnailPages.push(GDT.children[i].children[0].href);
       }
     }
     const REQUESTED_PAGES = NUMBER_THUMBNAIL_PAGES - BEGINNING_PAGE_NUMBER + 1; // total should be 2 (22-21+1)
-    for(let i=0;i<REQUESTED_PAGES;i++){
-      imageSources.push({id:i,source:""}) //populate the image sources with ids
+    for (let i = 0; i < REQUESTED_PAGES; i++) {
+      imageSources.push({ id: i, source: "" }); //populate the image sources with ids
     }
     if (NUMBER_THUMBNAIL_PAGES > 200) {
       let xhr1 = new XMLHttpRequest();
@@ -33,13 +37,12 @@ if (BEGINNING_PAGE_NUMBER !== NaN && BEGINNING_PAGE_NUMBER<=400 && NUMBER_THUMBN
           addSecondPage(NUMBER_THUMBNAIL_PAGES, thumbnailPages, RESPONSE_TEXT_1, BEGINNING_PAGE_NUMBER)
           engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks);
         }
-      }
+      };
     } else {
       engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks);
     }
   }
 }
-
 function addSecondPage(NUMBER_THUMBNAIL_PAGES, thumbnailPages, RESPONSE_TEXT_1, BEGINNING_PAGE_NUMBER) {
   if (BEGINNING_PAGE_NUMBER>=200){
     for (let i = BEGINNING_PAGE_NUMBER - 200; i <= NUMBER_THUMBNAIL_PAGES - 200; i++) {
@@ -56,7 +59,9 @@ function addSecondPage(NUMBER_THUMBNAIL_PAGES, thumbnailPages, RESPONSE_TEXT_1, 
   }
 }
 
+
 function engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks) {
+  const IPHONE_WIDTH = 1125;
   for (let i = 0; i < REQUESTED_PAGES; i++) {
     let xhr2 = new XMLHttpRequest();
     xhr2.open("GET", thumbnailPages[i]);
@@ -75,7 +80,7 @@ function engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks) {
             const IMAGE_SOURCE = RESPONSE_TEXT_3.split('src="')[5].split(
               '"'
             )[0];
-            if(imageSources[i].id===i){
+            if (imageSources[i].id === i) {
               imageSources[i].source = IMAGE_SOURCE;
               // console.log(IMAGE_SOURCE)
             }
@@ -85,25 +90,54 @@ function engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks) {
             body.innerHTML = "";
             body.style.margin = "0px";
             body.style.backgroundColor = "#000000";
-            let percentage = loadedLinks / REQUESTED_PAGES * 100;
+            let percentage = (loadedLinks / REQUESTED_PAGES) * 100;
             div.setAttribute(
               "style",
-              "background-color:#aaaaaa;height:100px;width:" +
-                percentage +
-                "%;"
+              "background-color:#aaaaaa;height:100px;width:" + percentage + "%;"
             );
             body.appendChild(div);
             if (loadedLinks === REQUESTED_PAGES) {
               body.innerHTML = "";
+              body.style.display = "flex";
+              body.style.flexDirection = "row";
+              body.style.flexWrap = "nowrap";
+              body.style.justifyContent = "left";
+              body.style.alignItems = "center";
+              let div = null;
               let image = null;
               for (let j = 0; j < REQUESTED_PAGES; j++) {
                 setTimeout(function () {
-                  let divContainer = document.createElement("div");
+                  const IMAGE_SOURCE = imageSources[j].source;
+                  const IMAGE_WIDTH = parseInt(IMAGE_SOURCE.split("-")[2]);
+                  const IMAGE_HEIGHT = parseInt(IMAGE_SOURCE.split("-")[3]);
+                  const RATIO_HW = IMAGE_HEIGHT / IMAGE_WIDTH;
+                  const FINAL_HEIGHT = parseInt(IPHONE_WIDTH * RATIO_HW);
+                  div = document.createElement("div");
+                  div.setAttribute(
+                    "style",
+                    "min-width:" +
+                      FINAL_HEIGHT +
+                      "px;min-height:" +
+                      IPHONE_WIDTH +
+                      "px;width:" +
+                      FINAL_HEIGHT +
+                      "px;height:" +
+                      IPHONE_WIDTH +
+                      "px;"
+                  );
                   image = new Image();
-                  image.setAttribute("style","height:auto;width:100%")
-                  image.src = imageSources[j].source;
-                  divContainer.append(image);
-                  body.appendChild(divContainer);
+                  image.loading = "eager";
+                  image.setAttribute(
+                    "style",
+                    "transform:matrix(0,-1,1,0,0,-232);height:" +
+                      FINAL_HEIGHT +
+                      "px;width:" +
+                      IPHONE_WIDTH +
+                      "px;"
+                  );
+                  image.src = IMAGE_SOURCE;
+                  div.append(image);
+                  body.appendChild(div);
                 }, j * 500); // load the images every 0.5 seconds
               }
             }
@@ -113,4 +147,4 @@ function engine(REQUESTED_PAGES, thumbnailPages, imageSources, loadedLinks) {
     };
   }
 }
-main()
+main();
