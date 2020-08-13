@@ -1,4 +1,4 @@
-# eh-reader
+# EH Reader
 
 A custom reader for sad panda on iPhone iOS 13 that is activated as a bookmarklet
 
